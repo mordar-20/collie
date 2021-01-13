@@ -5,6 +5,12 @@ Furthermore it takes care of checking wether a message is a command or not. This
 
 And now: let me explain how you would go about using this framework.
 
+# content
+* [installation](#installation)
+* [set up the bot](#to-initailize-this-bot-the-following-code-can-be-used)
+* [single commands](#command-using-botuse)
+* [command groups](#command-using-botuse)
+
 ## installation
 To install as a package you can use yarn:
 ```bash

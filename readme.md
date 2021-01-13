@@ -1,7 +1,7 @@
 # what it has to offer
-this bot wrapper for the wrapper discord.js allows for easy and dynamic constructing of the help command.
-this is possible by regestering methods to the bot, in a similar fashion to using routes in express. It allows for more readable and organized code.
-It also takes care of checking wether or not a message is a command. This saves time for you as developer to work on the actual functionality of the bot, rather than it's infrastructure.
+This bot wrapper focusses on the infrastructure. It uses discord.js and allows for easy and dynamic constructing of the help command.
+This is possible by regestering methods to the bot, in a similar fashion to using routes in express. It also allows for more readable and organized code.
+Furthermore it takes care of checking wether a message is a command or not. This saves time for you as developer to work on the actual functionality of the bot, rather than it's infrastructure.
 
 And now: let me explain how you would go about using this bot wrapper.
 

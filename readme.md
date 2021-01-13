@@ -101,7 +101,7 @@ and finally our main.ts file:
 ```ts
 import { testgroup } from "location-of-group";
 
-bot.use(testgroup);
+bot.useGroup(testgroup);
 ```
 
 the bot now knows wich group the methods belong to and shall show them grouped when the *help* command is used.

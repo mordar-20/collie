@@ -71,7 +71,7 @@ Ideally one would seperate the group, methods and use statement into seperate fi
 where in our example the content of the files would look like this:  
 test.group.ts
 ```ts
-import methods from "location-of-methods";
+import { methods } from "location-of-methods";
 
 export const testgroup = new Group("test commands!");
 

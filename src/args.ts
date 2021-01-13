@@ -5,16 +5,6 @@ export interface IArg {
     optional: boolean;
 }
 
-/**
- * pass arguments of type IArg
- *
- *```
- *args: new Args([
- *    { name: "url", optional: true },
- *    { name: "text", optional: false },
- *]),
- *```
- */
 export class Args {
     args: IArg[];
 

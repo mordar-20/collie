@@ -91,6 +91,7 @@ var Bot = /** @class */ (function () {
         return this._prefix;
     };
     Bot.prototype.use = function (command, method) {
+        method.command = command;
         this._commandMethodMap.set(command, method);
     };
     Bot.prototype.useGroup = function (group) {

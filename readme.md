@@ -14,11 +14,11 @@ And now: let me explain how you would go about using this framework.
 ## installation
 To install as a package you can use yarn:
 ```bash
-yarn add mordar-20/discord-bot-framework#master
+yarn add @beathan/collie
 ```
 or npm:
 ```bash
-npm install mordar-20/discord-bot-framework#master
+npm i @beathan/collie
 ```
 
 ## To initailize this bot the following code can be used

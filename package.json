@@ -1,9 +1,17 @@
 {
-  "name": "discord-bot-package",
-  "version": "1.0.0",
+  "name": "@beathan/collie",
+  "version": "1.1.0",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mordar-20/collie"
+  },
+  "author": {
+    "name": "beathan"
+  },
+  "description": "A very small framework for creating a discord bot. It tries to take care of infrastructure so you can focus on creating the actual functionality you want to provide.",
   "dependencies": {
     "ts-loader": "^8.0.14",
     "typescript": "^4.1.3",

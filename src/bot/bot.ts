@@ -1,27 +1,9 @@
 /** @format */
 
 import { Client, EmbedFieldData, Message, MessageEmbed } from "discord.js";
-import { Args } from "./args";
-import { Group } from "./group";
-
-export interface BotMethodUser {
-    use(command: string, method: BotMethod): void;
-}
-
-export interface BotMethod {
-    /**
-     * ```
-     * args: new Args([
-     *     {name: "url", optional: false}
-     * ])
-     * ```
-     */
-    command?: string;
-    group?: string;
-    args?: Args;
-    method: Function;
-    description: string;
-}
+import { BotMethodUser } from "./methods/botMethodUser";
+import { BotMethod } from "./methods/botMethod";
+import { Group } from "./group/group";
 
 export interface BotOptions {
     token: string;

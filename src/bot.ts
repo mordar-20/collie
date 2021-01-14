@@ -95,6 +95,7 @@ export class Bot implements BotMethodUser {
     }
 
     public use(command: string, method: BotMethod): void {
+        method.command = command;
         this._commandMethodMap.set(command, method);
     }
 

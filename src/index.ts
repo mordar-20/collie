@@ -1,5 +1,7 @@
 /** @format */
 
-export * from "./bot";
-export * from "./args";
+import { Bot } from "./bot/bot";
+
+export * from "./bot/bot";
+export * from "./bot/args/args";
 export * from "./group";

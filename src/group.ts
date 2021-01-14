@@ -1,6 +1,8 @@
 /** @format */
 
-import { Bot, BotMethod, BotMethodUser } from "./bot";
+import { Bot } from "./bot/bot";
+import { BotMethod } from "./bot/methods/botMethod";
+import { BotMethodUser } from "./bot/methods/botMethodUser";
 
 export class Group implements BotMethodUser {
     private _commandBotMethodMap: Map<string, BotMethod>;

@@ -2,8 +2,8 @@
 
 import { Client, EmbedFieldData, Message, MessageEmbed } from "discord.js";
 import { BotMethodUser } from "./methods/botMethodUser";
-import { Group } from "../group";
 import { BotMethod } from "./methods/botMethod";
+import { Group } from "./group/group";
 
 export interface BotOptions {
     token: string;

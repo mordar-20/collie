@@ -16,11 +16,11 @@ interface sendData {
 }
 
 export enum MessageType {
-    reply,
-    replyEmbed,
-    channelEmbed,
-    react,
-    channel,
+    Reply,
+    ReplyEmbed,
+    Channel,
+    ChannelEmbed,
+    React,
 }
 
 export class Response {
@@ -29,7 +29,6 @@ export class Response {
     private _type: MessageType;
 
     private _stringMessage: string = "";
-    private _reactMessage: string = "";
     private _imageUrl: string = "";
 
     constructor(msg: Message) {
@@ -37,7 +36,7 @@ export class Response {
 
         this._embed = new MessageEmbed();
 
-        this._type = MessageType.reply;
+        this._type = MessageType.Reply;
     }
 
     setType(type: MessageType) {
@@ -118,27 +117,26 @@ export class Response {
      */
     send() {
         switch (this._type) {
-            case MessageType.channelEmbed:
+            case MessageType.ChannelEmbed:
                 this.channelSend(this._embed);
                 break;
-            case MessageType.channel:
+            case MessageType.Channel:
                 this.channelSend(this._stringMessage);
                 break;
-            case MessageType.reply:
+            case MessageType.Reply:
                 this.reply(this._stringMessage);
                 break;
-            case MessageType.replyEmbed:
+            case MessageType.ReplyEmbed:
                 this.reply(this._embed);
                 break;
-            case MessageType.react:
-                this.react(this._reactMessage);
+            case MessageType.React:
+                this.react(this._stringMessage);
                 break;
         }
     }
 
     //send to channel
     private channelSend(msg: MessageEmbed | string) {
-        console.log(msg);
         const channel = this._msg.channel;
         if (msg instanceof MessageEmbed) {
             channel.send(msg);
@@ -170,9 +168,9 @@ export class Response {
     }
 
     /**
-     * returns discord.js Message
+     * returns discord.js Message object
      */
-    getMessage() {
+    getDiscordMessageObject() {
         return this._msg;
     }
 }

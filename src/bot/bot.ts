@@ -89,12 +89,16 @@ export class Bot implements BotMethodUser {
         });
     }
 
-    public async onMessage(msg: Message): Promise<void> {
+    private async onMessage(msg: Message): Promise<void> {
         const prefix = msg.content[0];
-        this._prefix = prefix;
+
+        //not the correct prefix
+        if (this._prefix != prefix) return;
 
         const commandBody = msg.content.slice(this._prefix.length);
-        const args = commandBody.split(" ");
+        const regex = / +(?=(?:(?:[^"]*"){2})*[^"]*$)/g;
+        const args = commandBody.split(regex);
+
         const commandString = args.shift()?.toLowerCase();
 
         //return because it is not a command

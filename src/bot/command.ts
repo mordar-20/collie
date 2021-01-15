@@ -6,7 +6,7 @@ import { Bot } from "./bot";
 
 export class Command {
     private _command: string;
-    // private _args: Map<IArg, string>;
+    private _args: Map<string, string> = new Map();
     private _botInstance: Bot;
 
     constructor(command: string, args: string[], botInstance: Bot) {
@@ -17,12 +17,34 @@ export class Command {
     }
 
     private parseArgs(args: string[]) {
-        console.log(args);
+        const argValMap = new Map<string, string>();
+
+        for (let i = 0; i < args.length; i++) {
+            argValMap.set(
+                args[i],
+                args[i + 1].replace(new RegExp('"', "g"), "")
+            );
+            i++;
+        }
+
+        this._args = argValMap;
     }
 
-    getArgs() {}
+    /**
+     * returns all arguments
+     */
+    getArgs() {
+        return this._args;
+    }
 
-    getArg(key: string) {}
+    /**
+     * returns argument value where argument name is key
+     * returns undefined if not given
+     * @param key
+     */
+    getArg(key: string) {
+        return this._args.get(key);
+    }
 
     getCommand() {
         return this._command;

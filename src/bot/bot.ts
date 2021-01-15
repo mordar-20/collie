@@ -4,6 +4,8 @@ import { Client, EmbedFieldData, Message, MessageEmbed } from "discord.js";
 import { BotMethodUser } from "./methods/botMethodUser";
 import { BotMethod } from "./methods/botMethod";
 import { Group } from "./group/group";
+import { Command } from "./command";
+import { Response } from "./response";
 
 export interface BotOptions {
     token: string;
@@ -82,11 +84,9 @@ export class Bot implements BotMethodUser {
     }
 
     public useGroup(group: Group): void {
-        group
-            .getMethods()
-            .forEach((botMethod: BotMethod, command: string, Map) => {
-                this._commandMethodMap.set(command, botMethod);
-            });
+        group.getMethods().forEach((botMethod: BotMethod, command: string) => {
+            this._commandMethodMap.set(command, botMethod);
+        });
     }
 
     public async onMessage(msg: Message): Promise<void> {
@@ -95,14 +95,18 @@ export class Bot implements BotMethodUser {
 
         const commandBody = msg.content.slice(this._prefix.length);
         const args = commandBody.split(" ");
-        const command = args.shift()?.toLowerCase();
+        const commandString = args.shift()?.toLowerCase();
 
         //return because it is not a command
-        if (command == undefined) return;
-        if (command == "help") this.help(msg);
+        if (commandString == undefined) return;
+        if (commandString == "help") this.help(msg);
 
-        this._commandMethodMap.forEach((botMethod, key, map) => {
-            if (key == command) botMethod.method(msg, command, args, this);
+        this._commandMethodMap.forEach((botMethod, key) => {
+            if (key == commandString) {
+                const command = new Command(commandString, args, this);
+                const response = new Response(msg);
+                botMethod.method(command, response);
+            }
         });
     }
 

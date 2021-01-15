@@ -1,4 +1,5 @@
-<!-- @format -->
+<a href="https://www.buymeacoffee.com/beathan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
 
 # what it has to offer
 

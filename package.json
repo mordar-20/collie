@@ -1,9 +1,13 @@
 {
   "name": "@beathan/collie",
-  "version": "1.1.4",
+  "version": "2.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "scripts": {
+    "build": "yarn tsc",
+    "publish": "yarn tsc && npm publish"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mordar-20/collie"
@@ -13,8 +17,11 @@
   },
   "description": "A very small framework for creating a discord bot. It tries to take care of infrastructure so you can focus on creating the actual functionality you want to provide.",
   "dependencies": {
+    "discord.js": "^12.5.1",
     "ts-loader": "^8.0.14",
-    "typescript": "^4.1.3",
-    "discord.js": "^12.5.1"
+    "typescript": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.21"
   }
 }

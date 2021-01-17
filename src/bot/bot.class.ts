@@ -1,13 +1,13 @@
 /** @format */
 
 import { Client, EmbedFieldData, Message, MessageEmbed } from "discord.js";
-import { BotMethodUser } from "./methods/botMethodUser";
-import { BotMethod } from "./methods/botMethod";
-import { Group } from "./group/group";
-import { Command } from "./command";
-import { Response } from "./response";
+import { IBotMethodUser } from "./methods/botMethodUser.interface";
+import { ICommandMethod, IWordMethod } from "./methods/botMethod.interface";
+import { Group } from "./group/group.class";
+import { Command } from "./message/command.class";
+import { Response } from "./message/response.class";
 
-export interface BotOptions {
+export interface IBotOptions {
     token: string;
     prefix?: string;
     helpMessage?: {
@@ -19,14 +19,16 @@ export interface BotOptions {
     };
 }
 
-export class Bot implements BotMethodUser {
-    private _commandMethodMap: Map<string, BotMethod> = new Map();
+export class Bot implements IBotMethodUser {
+    private _commandMethodMap: Map<string, ICommandMethod> = new Map();
+    private _wordToMethodMap: Map<string, IWordMethod> = new Map();
+
     private _prefix = "!";
     private _helpEmbed;
     private _token: string = "";
     private _client: Client;
 
-    constructor(options: BotOptions) {
+    constructor(options: IBotOptions) {
         this._helpEmbed = new MessageEmbed()
             .setTitle("bot")
             .setDescription("here are all my commands:")
@@ -78,18 +80,63 @@ export class Bot implements BotMethodUser {
         return this._prefix;
     }
 
-    public use(command: string, method: BotMethod): void {
+    /**
+     * set command for the bot to listen to
+     * @param command
+     * @param method
+     */
+    public use(command: string, method: ICommandMethod): void {
         method.command = command;
         this._commandMethodMap.set(command, method);
     }
 
-    public useGroup(group: Group): void {
-        group.getMethods().forEach((botMethod: BotMethod, command: string) => {
-            this._commandMethodMap.set(command, botMethod);
+    /**
+     * set a word that the bot will look for in every message
+     * @param word
+     * @param method
+     */
+    public listen(word: string, method: IWordMethod): void {
+        method.word = word;
+        this._wordToMethodMap.set(word, method);
+    }
+
+    /**
+     * listen to all words defined in the group
+     * @param group
+     */
+    public listenGroup(group: Group): void {
+        group.getListenMethods().forEach((method) => {
+            this._wordToMethodMap.set(method.word!, method);
         });
     }
 
+    /**
+     * set a group of commands for the bot to listen to
+     * @param group
+     */
+    public useGroup(group: Group): void {
+        group
+            .getMethods()
+            .forEach((botMethod: ICommandMethod, command: string) => {
+                this._commandMethodMap.set(command, botMethod);
+            });
+    }
+
     private async onMessage(msg: Message): Promise<void> {
+        this.checkMethods(msg);
+        this.checkListeners(msg);
+    }
+
+    private checkListeners(msg: Message) {
+        this._wordToMethodMap.forEach((botMethod: IWordMethod) => {
+            if (msg.content.includes(botMethod.word!)) {
+                const response = new Response(msg);
+                botMethod.method(botMethod.word, response);
+            }
+        });
+    }
+
+    private checkMethods(msg: Message) {
         const prefix = msg.content[0];
 
         //not the correct prefix
@@ -114,10 +161,9 @@ export class Bot implements BotMethodUser {
         });
     }
 
-    private help(msg: Message): void {
-        const help: EmbedFieldData[] = [];
-
-        let groupsAndMethods = new Map<string, BotMethod[]>();
+    //groups all methods together in a map by group
+    private groupMethods() {
+        let groupsAndMethods = new Map<string, ICommandMethod[]>();
         this._commandMethodMap.forEach((botMethod, key, map) => {
             if (!botMethod.group) botMethod.group = "ungrouped";
             if (groupsAndMethods.has(botMethod.group)) {
@@ -126,10 +172,19 @@ export class Bot implements BotMethodUser {
                     val.push(botMethod);
                 }
             } else {
-                let arr: BotMethod[] = [botMethod];
+                let arr: ICommandMethod[] = [botMethod];
                 groupsAndMethods.set(botMethod.group, arr);
             }
         });
+
+        return groupsAndMethods;
+    }
+
+    private help(msg: Message): void {
+        const help: EmbedFieldData[] = [];
+
+        //add all commands to help message_embed
+        let groupsAndMethods = this.groupMethods();
 
         groupsAndMethods.forEach((methods, group) => {
             let commands = "";
@@ -151,6 +206,16 @@ export class Bot implements BotMethodUser {
                 value: ">>> " + commands,
             });
         });
+
+        //add all words the bot listens for to the help_embed
+        let words = "";
+        this._wordToMethodMap.forEach((method) => {
+            words += `**${method.word}**
+            *${method.description}*
+            `;
+        });
+
+        help.push({ name: "words I listen for:", value: ">>> " + words });
 
         const channel = msg.channel;
 

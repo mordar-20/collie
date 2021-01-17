@@ -1,8 +1,8 @@
 /** @format */
 
 import { Message } from "discord.js";
-import { IArg } from "./args/args";
-import { Bot } from "./bot";
+import { IArg } from "../args/args.class";
+import { Bot } from "../bot.class";
 
 export class Command {
     private _command: string;

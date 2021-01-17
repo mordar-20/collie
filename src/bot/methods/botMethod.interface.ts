@@ -1,8 +1,8 @@
 /** @format */
 
-import { Args } from "../args/args";
+import { Args } from "../args/args.class";
 
-export interface BotMethod {
+export interface ICommandMethod {
     /**
      * ```
      * args: new Args([
@@ -15,4 +15,10 @@ export interface BotMethod {
     args?: Args;
     method: Function;
     description: string;
+}
+
+export interface IWordMethod {
+    word?: string;
+    description: string;
+    method: Function;
 }
